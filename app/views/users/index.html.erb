@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Users</h1>
+ <%= link_to 'New User', new_user_path, class: "btn btn-primary" %>
+  <table class="table table-hover" id="user">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| %>
+        <tr class="table-secondary">
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td class="actions">
+          <%= link_to '<span class="ti-pencil-alt"></span>show'.html_safe, user, :class => "btn btn-crud-action btn-xs tooltips" %></td>
+          <td><%= link_to 'Edit', edit_user_path(user) %></td>
+          <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    $('#user').dataTable();
+} );
+<% end %>

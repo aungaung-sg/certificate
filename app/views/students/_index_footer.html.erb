@@ -1,0 +1,40 @@
+<div class="fixed-table-pagination">
+  <div class="pull-left pagination-detail">
+    <span class="pagination-info">
+      <%= page_entries_info  @students %>
+    </span>
+    <% if  @students.count > 24 %>
+      <span class="page-list">
+          <%= form_tag root_path, method: :get, id: 'per_form' do %>
+              <%= t ("views.pagination.max_per_page") %>
+              <%= select_tag :per, options_for_select([25,50,100], selected: params[:per] || 25) %>
+              <%= t ("views.pagination.pages") %>
+            <% end %>
+      </span>
+    <% end %>
+  </div>
+  <!-- add limit on page number -->
+  <%if  @students.current_page < 3%>
+    <% @window = 5 -  @students.current_page%>
+  <%elsif  @students.last_page?%>
+    <% @window =  4  %>
+  <%elsif  @students.current_page ==  @students.total_pages - 1 %>
+    <% @window =  3  %>
+  <% else %>
+    <% @window =  2 %>
+  <% end %>
+
+    <div class="pull-right paginate-container">
+          <%= paginate  @students, window: @window%>
+    </div>
+</div>
+
+<script type="text/javascript" >
+  $(function(){
+    $('#per').change(
+      function() {
+       $('#per_form').submit();
+      });
+  });
+</script>
+

@@ -1,0 +1,42 @@
+<h1>All Students</h1>
+<%= link_to 'New Student', new_student_path, class: "btn btn-primary" %>
+<table id="student" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Student Code</th>
+      <th>Student Name</th>
+      <th>Course</th>
+      <th>created_at</th>
+      <th>updated_at</th>
+      <th>status</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      
+    </tr>
+  </thead>
+
+  <tbody>
+    
+    <% @students.each do |student| %>
+      <tr>
+        <td><%= student.code %></td>
+        <td><%= student.name %></td>
+        <td><%= student.course.name %></td>
+        <td> <%= student.created_at %></td>
+        <td><%= student.updated_at%> </td>
+        <td><%= student.status%> </td>
+        <td><%= link_to 'Show', student, class: "btn btn-default btn btn-info" %></td>
+        <td><%= link_to 'Edit', edit_student_path(student), class: "btn btn-default btn-float btn btn-success" %></td>
+        <td><%= link_to 'Destroy', student, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    $('#student').dataTable();
+} );
+<% end %>
+
+

@@ -1,0 +1,25 @@
+<%# Link to the "Last" page
+  - available local variables
+    url:           url to the last page
+    current_page:  a page object for the currently displayed page
+    num_pages:     total number of pages
+    per_page:      number of items to fetch per page
+    remote:        data-remote
+-%>
+<% unless current_page.last? %>
+<li class="last next"><%# "next" class present for border styling in twitter bootstrap %>
+  <%= link_to url, :remote => remote do %>
+    <span class="pagination-btn-text"></span>
+    <span class="pagination-btn-text-sub"></span>
+    <span class="ti-angle-double-right"></span>
+  <% end %>
+</li>
+<% else %>
+  <li class="last next disabled">
+  <%= link_to url, :remote => remote do %>
+    <span class="pagination-btn-text"></span>
+    <span class="pagination-btn-text-sub"></span>
+    <span class="ti-angle-double-right"></span>
+  <% end %>
+</li>
+<% end %>

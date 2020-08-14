@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-6 col-xs-6 col-md-offset-3">
+    <h1>Student Import</h1>
+
+    <p>A CSV or Excel file can be used to import students. The first row should be the column name. The following columns are allowed.</p>
+
+    <ul>
+      <% Student.columns.each do |column| %>
+        <% if column.name.in? ["id", *Student.column_names] %>
+          <li>
+            <strong><%= column.name %></strong> -
+            <%= column.type.to_s.titleize %> type
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+
+    <p>If you add the same <strong>id</strong>, it will update the matching Student instead of creating a new one.</p>
+
+    <%= form_for @student_import do |f| %>
+      <% if @student_import.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@student_import.errors.count, "error") %> prohibited this import from completing:</h2>
+          <ul>
+          <% @student_import.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="field">
+        <%= f.file_field :file , :required => true %>
+      </div>
+      <div class="buttons"><%= f.submit "Import" %></div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-6 col-xs-6 col-md-offset-3">
+    <%= form_with(model: student, local: true) do |form| %>
+      <% if student.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(student.errors.count, "error") %> error for  this student from being saved:</h2>
+
+          <ul>
+          <% student.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="field">
+        <%= form.label :code %>
+        <%= form.text_field :code, id: :student_code %>
+      </div>
+
+      <div class="field">
+        <%= form.label :name %>
+        <%= form.text_field :name, id: :student_name %>
+      </div>
+
+      <div class="field">
+          <%= form.label :course %>
+          <div class="row">
+            <% if current_user.admin? %>
+            <div class="col-md-6">
+              <%= form.select :user_id, User.all.map{ |c| [c.name, c.id]}, {:prompt => "select"} , :id => "user_id" %>
+            </div>
+            <div class="col-md-6">
+            <% else %>
+            <div class="col-md-12">
+            <% end %>
+            <% if current_user.admin? %>
+              <% @course =student.course_id.present? ? Course.where(id: student.course_id ): Course.all %>
+              <%= form.select :course_id, @course.map{ |c| [c.title, c.id]}, {:prompt => "select"} , :id => "course_id" %>
+            <% else %>
+              <%= form.select :course_id, options_from_collection_for_select(current_user.courses.all, 'id', 'title'), id: "course_id" %>
+            <% end %>
+            </div>
+          </div>
+      </div>
+
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script>
+$( document ).ready(function() {
+    if (window.location.href.indexOf("edit") != -1 ){
+      var current_url = 'course_data'
+    }else{
+      var current_url = 'student/course_data'
+    }
+   $("#user_id").on("change",function(){
+      $.ajax({
+        type: 'GET',
+        url: current_url,
+        data: { user_id: $("#user_id").val()},
+        dataType: "json",
+        success: function(data){
+          $('#course_id > *').remove();
+          $('#course_id').append('<option value="">select</option>');
+          $.each(data,function(index, item){
+          $('#course_id').append('<option value="'+ item.id + '">'+ item.title +'</option>');
+          });
+        }
+      })
+   });
+});
+</script>

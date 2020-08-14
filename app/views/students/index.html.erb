@@ -1,0 +1,52 @@
+<h1>All Students</h1>
+<%= link_to 'New Student', new_student_path, class: "btn btn-primary" %>
+<span>
+<%= link_to "Import", new_student_import_path, class: "btn btn-primary" %>
+<%= link_to "Export", students_path(format: "csv"), class: "btn btn-primary"  %>
+</span>
+<table id="student" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Student Code</th>
+      <th>Student Name</th>
+      <th>Course</th>
+      <th>Created Time</th>
+      <th>Updated Time</th>
+      
+      <th style="width: 150px;">
+        <%= form_tag students_path, :method => 'get', :id => "user_select" do %>
+          <%= select_tag :user_id, options_from_collection_for_select(User.all, 'id', 'name'), id: "user_select", onchange: 'this.form.submit();', prompt: " " %>
+        <% end %>
+      </th>
+      <th>Status</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      
+    </tr>
+  </thead>
+
+  <tbody>
+    
+    <% @students.each do |student| %>
+      <tr>
+        <td><%= student.code %></td>
+        <td><%= student.name %></td>
+        <td><%= student.course.title %></td>
+        <td> <%= student.created_at %></td>
+        <td><%= student.updated_at%> </td>
+        <td><%= student.user.name %></td>
+        <td><%= student.status%> </td>
+        <td><%= link_to "Print", student_path(student, format: 'pdf'), class: "btn btn-default btn btn-info"%></td>
+        <td><%= link_to 'Edit', edit_student_path(student), class: "btn btn-default btn btn-success" %></td>
+        <td><%= link_to 'Destroy', student, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render 'index_footer' %>
+
+
+<span class="ti-angle-double-left"></span>
+<span class="pagination-btn-text"></span>
+<span class="pagination-btn-text-sub"></span>

@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Courses</h1>
+<%= link_to 'New Course', new_course_path, class: "btn btn-primary"  %>
+<table class="table table-hover" id="courses">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Course Title</th>
+      <th>Description</th>
+      <th>Branch Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @courses.each do |course| %>
+      <tr>
+        <td><%= course.id %></td>
+        <td><%= course.name %></td>
+        <td><%= course.title %></td>
+        <td><%= course.description %></td>
+        <td><%= course.user.name %></td>
+        <td><%= link_to 'Show', course %></td>
+        <td><%= link_to 'Edit', edit_course_path(course) %></td>
+        <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    $('#courses').dataTable();
+} );
+<% end %>
