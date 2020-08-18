@@ -34,6 +34,10 @@ class StudentsController < ApplicationController
 
   def bulk_print
     @pdf_resources = Student.where(id: params[:student_ids])
+    @pdf_resources.each do |pdf| 
+      pdf.update(status: 'complete')
+      pdf.save!
+    end
     pdf = StudentPdf.new(@pdf_resources)
     send_data pdf.render,
               filename: "student_#{Time.now}",
@@ -44,7 +48,7 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     if current_user.admin?
-      @student.update_attributes(status: 'complete')
+      @student.update(status: 'complete')
       @student.save!
     end
     respond_to do |format|
@@ -119,6 +123,6 @@ class StudentsController < ApplicationController
     end
       
     def sort_direction
-      params[:direction].present? ? params[:direction] : "asc"
+      params[:direction].present? ? params[:direction] : "desc"
     end
 end

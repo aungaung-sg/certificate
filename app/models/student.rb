@@ -14,6 +14,14 @@ class Student < ApplicationRecord
              all.order(created_at: :desc)
          end
      end
+
+     def self.filter(term)
+        if term.present?
+            where('name LIKE ?', "%#{search}%")
+        else
+            all
+        end
+    end
  
      def self.to_csv(options = {})
          CSV.generate(options) do |csv|

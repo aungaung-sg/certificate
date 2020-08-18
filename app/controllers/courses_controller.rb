@@ -83,6 +83,6 @@ class CoursesController < ApplicationController
     end
       
     def sort_direction
-      params[:direction].present? ? params[:direction] : "asc"
+      params[:direction].present? ? params[:direction] : "desc"
     end
 end
