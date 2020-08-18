@@ -1,0 +1,58 @@
+
+<% if current_user %>
+<% @color = current_user.theme_id ? Theme.where(id: current_user.theme_id).pluck(:color_code)[0] : '#204d74'%>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color:<%= @color%>;">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <a class="navbar-brand" style="background-color:<%= @color%>;" href="/students">
+      <img src="/assets/test1.png" alt="LOGO">
+    </a>
+    <ul class="nav navbar-right top-nav">
+      <li><a href="#" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Stats">
+        <i class="fas fa-bars"></i></a>
+      </li>            
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-user"></i><%= current_user.name if current_user %> <b class="fa fa-angle-down"></b></a>
+        <ul class="dropdown-menu">
+          <li>
+            <%= link_to '<i class="fa fa-fw fa-user"></i>Edit Profile'.html_safe, edit_user_registration_path %>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <%= link_to '<i class="fa fa-fw fa-power-off"></i>Logout'.html_safe, destroy_user_session_path, :method => :delete %>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav" style="background-color:<%= @color%>;">
+      <li class="user-mode"> <%= "Admin" if current_user.admin? %></li>
+      <li><%= link_to '<i class="fa fa-user"></i>Students'.html_safe, students_path %></li>
+      <% if current_user.admin? %>
+      <li><%= link_to '<i class="far fa-file"></i>Courses'.html_safe, courses_path %></li>
+      <li><%= link_to '<i class="fa fa-fw fa-user"></i>Users'.html_safe, users_path %></li>
+      <% end %>
+      <li><%= link_to '<i class="fa fa-indent"></i>Themes'.html_safe, themes_path %></li>
+    </ul>
+  </div>
+</nav>
+<% end %>
+
+<script>
+$("document").ready(function(){
+   $(function(){
+        $('a').each(function(){
+            if ($(this).prop('href') == window.location.href) {
+                $(this).addClass('active'); $(this).parents('li').addClass('active');
+            }
+        });
+    });
+});
+</script>

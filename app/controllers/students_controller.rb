@@ -1,20 +1,22 @@
 class StudentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_student, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
   
   def index
     if current_user.admin?
-      if params[:user_id]
-        @students = Student.search(params[:user_id]).page(params[:page])
-      end
-        @students = Student.search(params[:user_id] ).page(params[:page]).per(params[:per])
+        if sort_column == "title"
+          @resources = Student.search(params[:user_id] ).course_ordered(sort_direction).page(params[:page]).per(params[:per])
+        else
+          @resources = Student.search(params[:user_id] ).reorder(sort_column + " " + sort_direction).page(params[:page]).per(params[:per])
+        end
         respond_to do |format|
           format.html
-          format.csv { send_data @students.to_csv }
+          format.csv { send_data @resources.to_csv }
           format.xls  #{ send_data @products.to_csv(col_sep: "\t") }
         end
     else
-      @students = Student.search(params[:search]).where(user_id: current_user.id).page(params[:page]).per(params[:per])
+      @resources = Student.search(params[:search]).reorder(sort_column + " " + sort_direction).where(user_id: current_user.id).page(params[:page]).per(params[:per])
       render :user_index
     end
   end
@@ -30,12 +32,13 @@ class StudentsController < ApplicationController
     end
   end
 
-  def print_selected
-    params[:ids].each do |id|
-      student = Student.find(id)
-      student.destroy
-    end unless params[:ids].blank?
-    redirect_to students_url, :notice => 'Selected student are deleted successfully!'
+  def bulk_print
+    @pdf_resources = Student.where(id: params[:student_ids])
+    pdf = StudentPdf.new(@pdf_resources)
+    send_data pdf.render,
+              filename: "student_#{Time.now}",
+              type: 'application/pdf',
+              disposition: 'inline'
   end
 
   def show
@@ -48,7 +51,7 @@ class StudentsController < ApplicationController
       format.html
       format.json { head :no_content }
       format.pdf do
-        pdf = StudentPdf.new(@student)
+        pdf = StudentPdf.new([@student])
         send_data pdf.render,
                   filename: "student_#{@student.name}",
                   type: 'application/pdf',
@@ -108,6 +111,14 @@ class StudentsController < ApplicationController
     end
 
     def student_params
-      params.require(:student).permit(:code, :name, :course_id, :user_id)
+      params.require(:student).permit(:code, :name, :course_id, :user_id, :student_ids)
+    end
+
+    def sort_column
+      params[:sort].present? ? params[:sort] : "created_at"
+    end
+      
+    def sort_direction
+      params[:direction].present? ? params[:direction] : "asc"
     end
 end

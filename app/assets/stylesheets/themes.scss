@@ -1,0 +1,51 @@
+// Place all the styles related to the Themes controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.theme-panel-container {
+    padding-top: 15px;
+  
+    .theme-panel {
+      padding: 5px;
+      cursor: pointer;
+  
+      .theme-img > img {
+        width: 100%;
+        border: solid 1px #e7e7e7;
+      }
+  
+      .text {
+        font-size: 18px;
+        padding: 5px 0;
+        white-space: nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      &.checked {
+        background-color: #4DD0E1;
+  
+        .text {
+          color: #fff;
+          line-height: 1.42857143;
+        }
+  
+        &:before {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          top: 0;
+          right: 0;
+          background-color: #4DD0E1;
+          color: #fff;
+          text-align: center;
+          line-height: 40px;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  
+  #theme tr:last-child { 
+    border-bottom: 2px dotted #b94747;
+   }

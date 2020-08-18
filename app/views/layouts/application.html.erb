@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Certificate</title>
+    <title>Attendence</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,13 +10,23 @@
   </head>
 
   <body>
-  <%= render 'layouts/header' %>
-  <div class="container">
-    <% flash.each do |message_type, message| %> <!--  error msg from signup -->
-        <div class="alert alert-<%= message_type %>"><%= message %></div>
-      <% end %>
-    <%= yield %>
-    <%= render 'layouts/footer' %>
-  </div>
+    <%= render 'layouts/header1' %>
+    <div id="wrapper">
+     
+      <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row" id="main" >
+            <!-- 
+              <% flash.each do |message_type, message| %> 
+                <div class="alert alert-<%= message_type %>"><%= message %></div>
+              <% end %>
+            -->
+              <div class="col-sm-12 col-md-12 well" id="content">
+                  <%= yield %>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
   </body>
 </html>

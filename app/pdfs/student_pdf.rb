@@ -1,12 +1,15 @@
 class StudentPdf < Prawn::Document
   require 'prawn-styled-text'
-    def initialize(student)
+    def initialize(students)
       super(top_margin: 119, :page_layout => :portrait, :page_size => "A4" ) #[380, 500]
-      @student = student
-      header
-      student_name
-      signature
-      code
+      students.each_with_index do |student, index|
+        @student = student
+        header
+        student_name
+        signature
+        code
+        start_new_page unless index == students.size - 1
+      end
     end
     def header
       styled_text '<div  style="text-align: center; size: 11;">A Recognized Centre of London Chamber of Commerce & Industry</div>'

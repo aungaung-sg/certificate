@@ -18,7 +18,8 @@
 		  <dd><%= @course.description %></dd>
 		</dl>
 
-		<%= link_to 'Edit', edit_course_path(@course) %> |
-		<%= link_to 'Back', courses_path %>
+		<div class="center">
+		  <%= link_to 'back', courses_path, class: "position-relative btn btn-default btn-float btn-cancel" %>
+		</div>
 	</div>
 </div>

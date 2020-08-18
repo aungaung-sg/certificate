@@ -44,8 +44,9 @@
           </div>
       </div>
 
-      <div class="actions">
-        <%= form.submit %>
+      <div class="actions center">
+        <%= form.submit "submit", class: "btn btn-default btn btn-float btn-info" %>
+        <%= link_to 'cancel', students_path, class: " btn btn-default btn-float btn-cancel button4" %>
       </div>
     <% end %>
   </div>
