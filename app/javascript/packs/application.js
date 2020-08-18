@@ -9,7 +9,6 @@ require("@rails/activestorage").start()
 require("channels")
 require("bootstrap")
 require('datatables.net-bs4')
-require('jquery.minicolors')
 import 'popper.js/dist/popper.js';
 require('datatables.net-bs4')
 import "@fortawesome/fontawesome-free/js/all";
