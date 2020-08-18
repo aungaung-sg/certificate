@@ -1,11 +1,16 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!, :authorize_admin
   before_action :set_course, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
 
   # GET /courses
   # GET /courses.json
   def index
-    @courses = Course.all
+    if sort_column == "b_name"
+      @resources =  Course.all.branch_ordered(sort_direction).page(params[:page]).per(params[:per])
+    else
+      @resources = Course.all.reorder(sort_column + " " + sort_direction).page(params[:page]).per(params[:per])
+    end
   end
 
   # GET /courses/1
@@ -71,5 +76,13 @@ class CoursesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
       params.require(:course).permit(:name, :description, :user_id, :title)
+    end
+
+    def sort_column
+      params[:sort].present? ? params[:sort] : "created_at"
+    end
+      
+    def sort_direction
+      params[:direction].present? ? params[:direction] : "asc"
     end
 end

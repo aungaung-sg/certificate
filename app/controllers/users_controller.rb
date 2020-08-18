@@ -1,11 +1,12 @@
 class UsersController < ApplicationController
     before_action :authenticate_user!, :authorize_admin
     before_action :set_user, only: [:show, :edit, :update, :destroy]
+    helper_method :sort_column, :sort_direction
   
     # GET /users
     # GET /users.json
     def index
-      @users = User.all.where("id != ?", current_user.id)
+      @resources = User.all.where("id != ?", current_user.id).reorder(sort_column + " " + sort_direction).page(params[:page]).per(params[:per])
     end
   
     # GET /users/1
@@ -71,6 +72,14 @@ class UsersController < ApplicationController
       # Never trust parameters from the scary internet, only allow the white list through.
       def user_params
         params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      end
+
+      def sort_column
+        params[:sort].present? ? params[:sort] : "created_at"
+      end
+        
+      def sort_direction
+          params[:direction].present? ? params[:direction] : "asc"
       end
   end
   

@@ -1,0 +1,33 @@
+
+<div class="row">
+  <div class="col-md-6 col-xs-6 col-md-offset-3">
+    <%= form_with(model: theme, local: true) do |form| %>
+      <% if theme.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(theme.errors.count, "error") %> prohibited this theme from being saved:</h2>
+
+          <ul>
+          <% theme.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="field">
+        <%= form.label :name %>
+        <%= form.text_field :name, id: :theme_name %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :color_code %>
+        <%= form.color_field :color_code, id: :theme_color_code, :class => "form-control" %>
+      </div>
+
+        <div class="actions center">
+          <%= form.submit "submit", class: "btn btn-default btn btn-float btn-info" %>
+          <%= link_to 'cancel', themes_path, class: " btn btn-default btn-float btn-cancel button4" %>
+        </div>
+    <% end %>
+  </div>
+</div>

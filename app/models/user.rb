@@ -3,14 +3,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  attr_accessor :login
+  attr_accessor :login, :skip_validation
   validates :email, presence: true, length: { maximum: 255 }, uniqueness: { case_sensitive: false }
   validates :name, presence: true, length: {maximum: 255}, uniqueness: { case_sensitive: false }, format: { :with => /\A[^0-9`!@#\$%\^&*+_=]+\z/, message: "may only contain letters and numbers." }
   validates :password, length: { minimum: 8}
-  validate :password_complexity
-  validate :validate_name
+  validate :password_complexity, unless: :skip_validation
+  validate :validate_name, unless: :skip_validation
   has_many :students
   has_many :courses
+  belongs_to :theme
 
   #overrrite the build method to login with name or email
   def self.find_for_database_authentication(warden_conditions)

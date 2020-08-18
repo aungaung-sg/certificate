@@ -3,11 +3,14 @@ Rails.application.routes.draw do
   resources :courses
   devise_for :users, :controllers => { :registrations => "registrations" }
   resources :students do
-    post :print_selected, :on => :collection
+    post :bulk_print, :on => :collection
     get :course_data
   end
   root 'students#index'
   match '/users',   to: 'users#index',   via: 'get'
   resources :users
   resources :student_imports
+  resources :themes do
+    put :update_theme
+  end
 end

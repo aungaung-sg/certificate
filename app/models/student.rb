@@ -4,6 +4,7 @@ class Student < ApplicationRecord
      #form field validation
      validates :name, presence: true, length: {maximum: 255}, format: { :with => /\A[^0-9`!@#\$%\^&*+_=]+\z/, message: "may only contain letters and numbers." }
      #validates :code,  presence: true
+     scope :course_ordered, ->(order) { includes(:course).order("courses.title" + " " + order) }
  
      #simple search form
      def self.search(search)

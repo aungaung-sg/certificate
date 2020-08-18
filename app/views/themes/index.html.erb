@@ -1,0 +1,101 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Theme List</h1>
+<% if current_user.admin? %>
+<%= link_to 'New Theme', new_theme_path, class: "btn btn-info btn-float tooltips" %>
+<button onClick="showTable()" class="btn btn-info btn-float tooltips">Show Color List</button>
+<% end %>
+<table id="theme" class="table table-hover" style="display: none">
+  <thead>
+    <tr>
+      <th> Name</th>
+      <th>Color</th>
+      <th>Created Time</th>
+      <th>Updated Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      
+    </tr>
+  </thead>
+
+  <tbody>
+    
+    <% @themes.each do |theme| %>
+      <tr>
+        <td><%= theme.name %></td>
+        <td style="background-color: <%= theme.color_code %>"></td>
+        <td> <%= theme.created_at.strftime("%Y-%m-%d %I:%M") %></td>
+        <td><%= theme.updated_at.strftime("%Y-%m-%d %I:%M")%> </td>
+        <td><%= link_to edit_theme_path(theme), class: "btn btn-default btn btn-success" do %>
+          <i class="glyphicon glyphicon-edit"></i>
+        <% end %>
+        <td>
+        <% if User.where(theme_id: theme.id).present? %>
+          <%= link_to theme, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default btn btn-danger disabled" do %>
+            <i class="glyphicon glyphicon-trash"></i>
+          <% end %>
+        <% else %>
+          <%= link_to theme, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default btn btn-danger" do %>
+            <i class="glyphicon glyphicon-trash"></i>
+          <% end %>
+        <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="row">
+  <% @themes.each do |resource| %>
+    
+    <div id="resource-<%= resource.id %>" class="theme-panel-container -xs-6 col-xs-6 col-sm-4 col-md-3 col-lg-3">
+      <div class="theme-panel <%= resource.id == current_user.theme_id ? 'ti-check checked' : '' %>">
+        <div class="theme-img" style="background-color:<%= resource.color_code %>;">
+          <%= image_tag "theme_img_no_text.png" %>
+        </div>
+        <div class="text text-center">
+          <%= resource.name %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  function showTable() {
+  var x = document.getElementById("theme");
+  if (x.style.display === "none") {
+    x.style.display = "table";
+  } else {
+    x.style.display = "none";
+  }
+}
+  $(function() {
+    var $panels = $('.theme-panel'),
+        hundleClick = function(event) {
+          var that = this;
+          var theme_id =  $(that).parent().attr('id').replace('resource-', '');
+          $.ajax({
+            url: "themes/" + theme_id + "/update_theme",
+            type: 'PUT',
+            dataType: 'json',
+            data: {theme: {id: $(that).parent().attr('id').replace('resource-', '')}},
+            success: function(data) {
+              $panels.removeClass('ti-check');
+              $panels.removeClass('checked');
+              $(that).addClass('ti-check');
+              $(that).addClass('checked');
+              location.reload(); 
+            },
+            error:function() {
+              alert('failed');
+            }
+          });
+        };
+
+    $panels.click(hundleClick);
+  });
+</script>
+
+
