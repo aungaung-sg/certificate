@@ -171,6 +171,7 @@ GEM
       ruby-ll (~> 2.1)
     orm_adapter (0.5.0)
     pdf-core (0.7.0)
+    pg (1.2.3-x64-mingw32)
     prawn (2.2.2)
       pdf-core (~> 0.7.0)
       ttfunk (~> 1.5)
@@ -298,6 +299,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kaminari
+  pg
   prawn
   prawn-styled-text
   pry
