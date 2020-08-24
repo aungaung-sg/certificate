@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Users List</h1>
- <%= link_to 'New User', new_user_path, class: "btn btn-primary" %>
+<h1>User List</h1>
+ <%= link_to 'New User', new_user_path, class: "btn btn-info btn-float tooltips" %>
   <table class="table table-hover" id="user">
     <thead>
       <tr>
@@ -20,7 +20,6 @@
           <td><%= user.id %></td>
           <td><%= user.name %></td>
           <td><%= user.email %></td>
-          <td class="actions">
           <td>
           <%= link_to user, :class => "btn btn-crud-action btn-xs tooltips" do %>
             <i class="glyphicon glyphicon-list-alt"></i>

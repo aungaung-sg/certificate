@@ -33,8 +33,13 @@
         <%= form.password_field :password_confirmation, id: :user_password_confirmation %>
       </div>
 
-      <div class="actions">
-        <%= form.submit %>
+      <div class="field">
+         <%= form.select :theme_id, Theme.all.map{ |c| [c.color_code,{ :style => "background-color: #{c.color_code}"}, c.id]}, {:prompt => "select"} , :id => "theme_id" %>
+      </div>
+
+      <div class="actions center">
+        <%= form.submit "submit", class: "btn btn-default btn btn-float btn-info" %>
+        <%= link_to 'cancel', users_path, class: " btn btn-default btn-float btn-cancel button4" %>
       </div>
     <% end %>
   </div>
